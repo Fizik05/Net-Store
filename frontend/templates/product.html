@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лэтуаль - Товар</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+    <!-- Навбар -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="../media/logotip.jpg" alt="Лэтуаль Логотип" height="50" class="d-inline-block align-text-top"> <!-- Логотип -->
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="catalog.html">Каталог</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contacts.html">Контакты</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="forms/login.html">Вход</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="forms/register.html">Регистрация</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Страница товара -->
+    <div class="container my-5">
+        <h2 id="product-name">Загрузка...</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <img id="product-image" src="../media/main_image.jpg" class="img-fluid product-img" alt="Товар">
+            </div>
+            <div class="col-md-8">
+                <h4 id="product-description">Загрузка...</h4>
+                <h3 id="product-price">Цена: Загрузка...</h3>
+                <button class="btn btn-success">Добавить в корзину</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Футер -->
+    <footer class="text-center py-3">
+        <div class="container">
+            <p>&copy; 2024 Лэтуаль. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Функция для получения параметра из URL (например, id товара)
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Получаем ID товара из URL
+        const productId = getQueryParam('id') || 1; // Если id не задан, использовать 1 по умолчанию
+
+        // Запрос к API для получения данных товара
+        fetch(`http://localhost:9567/products/${productId}`, {mode: 'cors'})
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                // Обновляем страницу данными товара
+                document.getElementById('product-name').textContent = data.product.Title;
+                document.getElementById('product-description').textContent = `Категория: ${data.product.Description}`;
+                document.getElementById('product-price').textContent = `Цена: ${data.product.Price} руб.`;
+                document.getElementById('product-image').src = data.product.ImageUrl;
+                document.getElementById('product-image').alt = data.product.Title;
+            })
+            .catch(error => console.error('Ошибка при загрузке товара:', error));
+    </script>
+</body>
+</html>

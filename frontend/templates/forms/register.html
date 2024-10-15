@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лэтуаль - Регистрация</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles/style.css">
+</head>
+<body>
+    <!-- Навбар -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">
+                <img src="../../media/logotip.jpg" alt="Лэтуаль Логотип" height="50" class="d-inline-block align-text-top"> <!-- Логотип -->
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../catalog.html">Каталог</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../contacts.html">Контакты</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html">Вход</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="register.html">Регистрация</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Форма регистрации -->
+    <div class="container my-5 col-md-4">
+        <h2>Регистрация</h2>
+        <form id="registerForm">
+            <div class="mb-3">
+                <label for="name" class="form-label">Имя</label>
+                <input type="text" class="form-control" id="name" placeholder="Введите ваше имя" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="Введите email" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Пароль</label>
+                <input type="password" class="form-control" id="password" placeholder="Введите пароль" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+        </form>
+    </div>
+
+
+    <!-- Футер -->
+    <footer class="text-center py-3">
+        <div class="container">
+            <p>&copy; 2024 Лэтуаль. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Отключаем стандартное поведение формы (перезагрузку)
+    
+            // Получаем значения полей
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+    
+            // Делаем POST-запрос к API
+            fetch('http://localhost:9567/users/sign-up', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    Name: name,
+                    Email: email,
+                    Password: password
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Ошибка при регистрации. Проверьте данные.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Регистрация успешна, перенаправляем пользователя на страницу каталога
+                window.location.href = './login.html';
+            })
+            .catch(error => {
+                // Обрабатываем ошибку
+                console.error('Ошибка:', error);
+                alert('Не удалось зарегистрироваться. Проверьте введенные данные.');
+            });
+        });
+    </script>
+    
+</body>
+</html>
